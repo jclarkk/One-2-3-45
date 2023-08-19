@@ -58,7 +58,7 @@ def reconstruct(exp_dir, output_format=".ply", device_idx=0, resolution=256):
     main_dir_path = os.path.abspath(os.path.dirname("./"))
     os.chdir('reconstruction/')
 
-    bash_script = f'CUDA_VISIBLE_DEVICES={device_idx} python exp_runner_generic_blender_val.py \
+    bash_script = f'CUDA_VISIBLE_DEVICES={device_idx} python3.10 exp_runner_generic_blender_val.py \
                     --specific_dataset_name {exp_dir} \
                     --mode export_mesh \
                     --conf confs/one2345_lod0_val_demo.conf \
@@ -103,13 +103,14 @@ if __name__ == "__main__":
     parser.add_argument('--half_precision', action='store_true', help='Use half precision')
     parser.add_argument('--mesh_resolution', type=int, default=256, help='Mesh resolution')
     parser.add_argument('--output_format', type=str, default=".ply", help='Output format: .ply, .obj, .glb')
+    parser.add_argument('--output_dir', type=str, default=os.getcwd(), help='Output directory')
 
     args = parser.parse_args()
 
     assert(torch.cuda.is_available())
 
     shape_id = args.img_path.split('/')[-1].split('.')[0]
-    shape_dir = f"./exp/{shape_id}"
+    shape_dir = os.path.join(args.output_dir, f"/exp/{shape_id}")
     os.makedirs(shape_dir, exist_ok=True)
 
     predict_multiview(shape_dir, args)
