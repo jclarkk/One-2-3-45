@@ -110,7 +110,7 @@ if __name__ == "__main__":
     assert(torch.cuda.is_available())
 
     shape_id = args.img_path.split('/')[-1].split('.')[0]
-    shape_dir = os.path.join(args.output_dir, f"/exp/{shape_id}")
+    shape_dir = os.path.join(args.output_dir, f"exp/{shape_id}")
     os.makedirs(shape_dir, exist_ok=True)
 
     predict_multiview(shape_dir, args)
